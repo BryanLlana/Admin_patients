@@ -1,6 +1,7 @@
 import { usePatientStore } from "../store"
 import { PatientWithId } from "../types"
 import PatientDetailItem from "./PatientDetailItem"
+import { toast } from 'react-toastify'
 
 type Props = {
   patient: PatientWithId
@@ -30,7 +31,10 @@ const PatientDetails = ({patient}: Props) => {
         <button
           type="button"
           className="py-2 px-10 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg"
-          onClick={() => deletePatient(id)}
+          onClick={() => {
+            toast.success('Paciente eliminado correctamente')
+            deletePatient(id)
+          }}  
         >Eliminar
         </button>
       </div>
