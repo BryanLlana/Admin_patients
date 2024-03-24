@@ -4,7 +4,8 @@ import { v4 as uuid } from 'uuid'
 
 type PatientState = {
   patients: PatientWithId[],
-  addPatient: (data: Patient) => void
+  addPatient: (data: Patient) => void,
+  deletePatient: (id: PatientWithId['id']) => void
 }
 
 const getLocalStoragePatients = (): PatientWithId[] => {
@@ -17,6 +18,11 @@ export const usePatientStore = create<PatientState>((set) => ({
   addPatient: (data) => {
     set(state => ({
       patients: [...state.patients, {...data, id: uuid()}]
+    }))
+  },
+  deletePatient: (id) => {
+    set(state => ({
+      patients: state.patients.filter(patient => patient.id !== id)
     }))
   }
 }))
