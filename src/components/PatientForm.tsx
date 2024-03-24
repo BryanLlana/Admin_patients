@@ -1,12 +1,14 @@
 import {useForm} from 'react-hook-form'
 import Error from './Error'
 import { Patient } from '../types'
+import { usePatientStore } from '../store'
 
 const PatientForm = () => {
+  const addPatient = usePatientStore(state => state.addPatient)
   const { register, handleSubmit, formState: { errors } } = useForm<Patient>()
 
   const registerPatient = (data: Patient) => {
-    
+    addPatient(data)
   }
 
   return (
