@@ -7,8 +7,13 @@ type PatientState = {
   addPatient: (data: Patient) => void
 }
 
+const getLocalStoragePatients = (): PatientWithId[] => {
+  const patients = localStorage.getItem('patients')
+  return patients ? JSON.parse(patients) : []
+}
+
 export const usePatientStore = create<PatientState>((set) => ({
-  patients: [],
+  patients: getLocalStoragePatients(),
   addPatient: (data) => {
     set(state => ({
       patients: [...state.patients, {...data, id: uuid()}]
