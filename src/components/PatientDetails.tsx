@@ -8,6 +8,7 @@ type Props = {
 
 const PatientDetails = ({patient}: Props) => {
   const deletePatient = usePatientStore(state => state.deletePatient)
+  const activateEditId = usePatientStore(state => state.activateEditId)
   const { id, name, caretaker, date, email, symptoms } = patient
 
   return (
@@ -23,6 +24,7 @@ const PatientDetails = ({patient}: Props) => {
         <button
           type="button"
           className="py-2 px-10 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg"
+          onClick={() => activateEditId(id)}
         >Editar
         </button>
         <button

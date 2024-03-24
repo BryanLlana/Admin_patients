@@ -2,13 +2,35 @@ import {useForm} from 'react-hook-form'
 import Error from './Error'
 import { Patient } from '../types'
 import { usePatientStore } from '../store'
+import { useEffect } from 'react'
 
 const PatientForm = () => {
   const addPatient = usePatientStore(state => state.addPatient)
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<Patient>()
+  const updatePatient = usePatientStore(state => state.updatePatient)
+  const editingId = usePatientStore(state => state.editingId)
+  const patients = usePatientStore(state => state.patients)
+  const { register, handleSubmit, setValue, formState: { errors }, reset } = useForm<Patient>()
+
+  useEffect(() => {
+    if (editingId) {
+      const activePatient = patients.find(patient => patient.id === editingId)
+      setValue('name', activePatient?.name!)
+      setValue('caretaker', activePatient?.caretaker!)
+      setValue('date', activePatient?.date!)
+      setValue('email', activePatient?.email!)
+      setValue('symptoms', activePatient?.symptoms!)
+    }
+  })
 
   const registerPatient = (data: Patient) => {
-    addPatient(data)
+    if (editingId) {
+      updatePatient({
+        ...data,
+        id: editingId
+      })
+    } else {
+      addPatient(data)
+    }
     reset()
   }
 
@@ -111,7 +133,7 @@ const PatientForm = () => {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-3 text-white font-bold hover:bg-indigo-700 cursor-pointer transition-colors rounded-md"
-          value='Guardar Paciente'
+          value={editingId ? 'Guardar cambios' : 'Guardar paciente'}
         />
       </form>
     </div>
